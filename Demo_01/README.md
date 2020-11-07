@@ -4,10 +4,8 @@
 * Initialize eBikes database
 * Review Flyway migrations folder structure
 * Review Flyway related files
-* Flyway migrations with Docker containers (V1 - eBikes)
-* Check eBikes database objects
-* Flyway migrations using Docker containers (V2 - eBikes)
-* Check eBikes database schema changes
+* Flyway migrations with Docker containers
+* Check eBikes database objects / schema changes
 
 ## Questions?
 If you have questions or comments about this demo, don't hesitate to contact me at <crobles@dbamastery.com>

@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Regions";
+}
+
+<div class="col-md-12">
+    &nbsp;
+    <h1 class="aligncenter">Regions</h1>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>Continent</th>
+            <th>Regions</th>
+        </tr>
+        @{
+            foreach(var item in ViewBag.regions){
+                <tr>
+                    <td>@item.region_id</td>
+                    <td>@item.continent</td>
+                    <td>
+                        <a asp-controller="Countries" asp-action="Details" asp-route-id="@item.region_id">@item.region</a>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>

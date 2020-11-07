@@ -1,0 +1,211 @@
+# Azure DevOps Test
+# GeoKids app - Version 1
+
+trigger:
+  - master
+
+resources:
+  - repo: self
+  
+# Pipeline variables
+variables:
+  tag: '$(Build.BuildId)'
+  dockerOrg: geokids
+  webDockerRepo: geokids-web-net-test
+  flywayDockerRepo: geokids-sql-flyway
+  webAppVersion: "1.0"
+  databaseVersion: "1.0"
+
+## Build stage ##
+###########################################################################
+stages:
+- stage: Build
+  displayName: Build & push
+
+  jobs:
+  # Web app build and push job
+  ###########################################################################
+  - job: Build_WebApp
+    displayName: Build & push webapp
+    continueOnError: false
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    # Defining tasks by step
+    steps:
+    # Docker build task
+    - task: Docker@2
+      displayName: Build webapp image
+      inputs:
+        containerRegistry: 'Geokids - DockerHub'
+        repository: '$(dockerOrg)/$(webDockerRepo)'
+        command: 'build'
+        Dockerfile: 'WebApp/Images/Dockerfile'
+        buildContext: '$(Build.Repository.LocalPath)/WebApp'
+
+    # Docker push task
+    - task: Docker@2
+      displayName: Push webapp image
+      inputs:
+        containerRegistry: 'Geokids - DockerHub'
+        repository: '$(dockerOrg)/$(webDockerRepo)'
+        command: 'push'
+        addPipelineData: false
+        tags: |
+          $(tag)
+
+  # Flyway migrations build and push job
+  ###########################################################################
+  - job: Build_Flyway
+    displayName: Build & push flyway
+    continueOnError: false
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    # Defining tasks by step
+    steps:
+    # Docker build task
+    - task: Docker@2
+      displayName: Build Flyway image
+      inputs:
+        containerRegistry: 'Geokids - DockerHub'
+        repository: '$(dockerOrg)/$(flywayDockerRepo)'
+        command: 'build'
+        Dockerfile: 'Database/Images/Dockerfile'
+        buildContext: '$(Build.Repository.LocalPath)/Database'
+
+    # Docker push task
+    - task: Docker@2
+      displayName: Push Flyway image
+      inputs:
+        containerRegistry: 'Geokids - DockerHub'
+        repository: '$(dockerOrg)/$(flywayDockerRepo)'
+        command: 'push'
+        addPipelineData: false
+        tags: |
+          $(tag)
+
+## Test stage ##
+###########################################################################
+- stage: Test
+  displayName: Test
+  dependsOn: Build
+
+  jobs:  
+  - job: Test
+    displayName: Unit tests
+    continueOnError: true
+    pool:
+      vmImage: 'ubuntu-latest'
+    
+    # Defining tasks by step
+    steps:
+    # Performing QA tests ... 
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo 'Performing QA tests ... '
+
+    # Performing stage tests ... 
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo 'Performing Stage tests ... '
+
+## Artifacts stage ##
+###########################################################################
+- stage: Artifacts
+  displayName: Artifacts
+  dependsOn: Test
+
+  jobs:  
+  - job: Artifacts
+    displayName: Copy & publish
+    pool:
+      vmImage: 'ubuntu-latest'
+    
+    # Defining tasks by step
+    steps:
+
+    # Artifact copy task
+    - task: CopyFiles@2
+      displayName: Copying YAML artifacts to staging folder
+      inputs:
+        Contents: 'Manifests/*.yaml'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    # Artifact publish task
+    - task: PublishBuildArtifacts@1
+      displayName: Publishing YAML artifacts
+      inputs:
+        artifactName: 'Artifacts'
+        publishLocation: 'Container'
+
+## Relese stage ##
+###########################################################################
+- stage: Release
+  displayName: Release
+  dependsOn: Artifacts
+
+  jobs:  
+  - job: Release
+    displayName: Release
+    pool:
+      vmImage: 'ubuntu-latest'
+    
+    # Defining tasks by step
+    steps:
+    # Download published artifacts
+    - task: DownloadBuildArtifacts@0
+      displayName: Download published artifacts
+      inputs:
+        ArtifactName: 'Artifacts'
+        downloadPath: '$(System.ArtifactsDirectory)'
+
+    # Updating YAML files with current build number
+    - task: replacetokens@3
+      displayName: 'Replace tokens in YAML file'
+      inputs:
+        rootDirectory: '$(System.ArtifactsDirectory)/Artifacts'
+        targetFiles: Manifests/*.yaml 
+
+    # Kubernetes webapp deployment
+    - task: Kubernetes@0
+      displayName: 'Kubernetes deployment - webapp '
+      inputs:
+        kubernetesServiceConnection: 'Geokids-Kubernetes'
+        command: apply
+        useConfigurationFile: true
+        configuration: '$(System.ArtifactsDirectory)/Artifacts/Manifests/dep-geokids-web.yaml'
+        arguments: '--record'
+        outputFormat: yaml
+
+    # Checking Kubernetes webapp deployment
+    - task: Kubernetes@0
+      displayName: 'Check webapp deployment '
+      inputs:
+        kubernetesServiceConnection: 'Geokids-Kubernetes'
+        command: get
+        arguments: pods -l app=geokids-web
+        outputFormat: yaml
+
+    # Kubernetes flyway migration job
+    - task: Kubernetes@0
+      displayName: 'Kubernetes deployment - flyway job '
+      inputs:
+        kubernetesServiceConnection: 'Geokids-Kubernetes'
+        command: apply
+        useConfigurationFile: true
+        configuration: '$(System.ArtifactsDirectory)/Artifacts/Manifests/job-geokids-migration.yaml'
+        outputFormat: yaml
+
+    # Checking Kubernetes flyway migration job
+    - task: Kubernetes@0
+      displayName: 'Check flyway migration job '
+      inputs:
+        kubernetesServiceConnection: 'Geokids-Kubernetes'
+        command: get
+        arguments: jobs
+        outputFormat: yaml

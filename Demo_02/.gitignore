@@ -1,0 +1,47 @@
+# Exclude macOS and VS code local files
+.DS_Store
+.LSOverride
+.vscode/
+*.swp
+*.*~
+project.lock.json
+.vs/
+
+# Exclude local folder directories
+ConfigFile/
+CustomSQL/
+Demo_00/
+Demo_01/
+Other/
+
+# Exclude local files
+*.sh
+azure-pipelines.yml.*
+Pipeline-*.png
+release-info.md
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+Webapp/[Dd]ebug/
+Webapp/[Dd]ebugPublic/
+Webapp/[Rr]elease/
+Webapp/[Rr]eleases/
+Webapp/x64/
+Webapp/x86/
+Webapp/build/
+Webapp/bld/
+Webapp/[Bb]in/
+Webapp/[Oo]bj/
+Webapp/msbuild.log
+Webapp/msbuild.err
+Webapp/msbuild.wrn
+
+# Version 2 folders
+v2-SQLScripts/
+v1-WebApp/
+v2-WebApp/

@@ -4,10 +4,8 @@
 #   2- Initialize eBikes database on SQL container
 #   3- Review Flyway migrations folder structure
 #   4- Review Flyway related files
-#   5- Flyway migrations with Docker containers (V1 - eBikes)
-#   6- Check eBikes database objects
-#   7- Flyway migrations using Docker containers (V2 - eBikes)
-#   8- Check eBikes database schema changes
+#   5- Flyway migrations with Docker containers
+#   6- Check eBikes database objects / schema changes
 # -----------------------------------------------------------------------------
 # Reference:
 #   https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility
@@ -29,11 +27,17 @@ SQLScripts=~/Documents/Summit-2020/Demo_01/SQLScripts;
 # docker rm -f eBikes;
 # docker volume rm vlm_SQLData;
 # sqlcmd -S localhost,1400 -U SA -h -1 -Q "DROP DATABASE eBikes; DROP LOGIN flyway;"
-# mv ./SQLScripts/V2.1__Load-ProductsRelated-data.sql ./v2-SQLScripts/V2.1__Load-ProductsRelated-data.sql;
-# mv ./SQLScripts/V2.2__Load-SalesRelated-data.sql ./v2-SQLScripts/V2.2__Load-SalesRelated-data.sql;
-# mv ./SQLScripts/V2.3__Load-OrdersRelated-data.sql ./v2-SQLScripts/V2.3__Load-OrdersRelated-data.sql;
 
 # 1- Create SQL Server container
+# ProTip: Limit your containers resource utilization 👀 🧐
+# SQL Server - System requirements
+# Memory        2 GB
+# CPUs          2 cores
+# Disk space    6 GB
+
+# eBikes - SQL Server instance
+# SQL Server 2019 CU8 - Ubuntu 18.04
+# 2 GBs of memory, 4 Cores (Docker configuration)
 docker container run \
     --name eBikes \
     --hostname eBikes \
@@ -45,14 +49,17 @@ docker container run \
     --detach mcr.microsoft.com/mssql/server:2019-CU8-ubuntu-18.04
 
 # 2- Initialize eBikes database on SQL container
+# ProTip: Use SQLCMDPASSWORD as environment variable 👀 🧐
+# SQLCMDPASSWORD='CmdL1n3_r0ck5' --> set a default password for the current session
+
 # Check SQL Server instance name
-# SQLCMDPASSWORD='CmdL1n3_r0ck5' --> environment variable to set a default password for the current session
 sqlcmd -S localhost,1400 -U SA -h -1 -Q "SET NOCOUNT ON; SELECT @@SERVERNAME;"
 
 # eBikes database init - SQL file
 code ./1_2_eBikesDatabaseInit.sql
 
 # Init database, grant access to Flyway login to eBikes SQL container + database
+# ProTip: The -e option, is to "echo" all inputs from the screen
 sqlcmd -S localhost,1400 -U SA -d master -e -i 1_2_eBikesDatabaseInit.sql
 
 # List all databases on eBikes SQL container
@@ -72,20 +79,29 @@ Demo_01
 ├── ConfigFile
 │   └── flyway.conf
 └── SQLScripts
-    ├── V1.1__Create-ProductionRelated-Tables.sql
-    ├── V1.2__Create-SalesRelated-Tables.sql
-    └── V1.3__Create-OrdersRelated-Tables.sql
+    ├── V1.1__Create-CustomerRelated-Tables.sql
+    ├── V1.2__Create-ProductRelated-Tables.sql
+    ├── V1.3__Create-RegionsRelated-Tables.sql
+    ├── V2.1__Load-CustomerRelated-data.sql
+    ├── V2.2__Load-ProductsRelated-data.sql
+    └── V2.3__Load-RegionsRelated-data.sql
 
 # 4- Review Flyway related files
 # Flyway config file
 code ./ConfigFile/flyway.conf
 
 # Migrations (SQL scripts)
+# eBikes database V1 - Table structures
 code ./SQLScripts/V1.1__Create-ProductionRelated-Tables.sql;
 code ./SQLScripts/V1.2__Create-SalesRelated-Tables.sql;
 code ./SQLScripts/V1.3__Create-OrdersRelated-Tables.sql;
 
-# 5- Flyway migrations with Docker containers (V1 - eBikes)
+# eBikes database V2 - Table data
+code ./SQLScripts/V2.1__Load-ProductsRelated-data.sql;
+code ./SQLScripts/V2.2__Load-SalesRelated-data.sql;
+code ./SQLScripts/V2.3__Load-OrdersRelated-data.sql;
+
+# 5- Flyway migrations with Docker containers
 # Flyway application structure
 flyway
 ├── lib
@@ -118,7 +134,7 @@ docker container run --rm \
     --network host \
     flyway/flyway info
 
-# Perform V1 migration
+# Perform migrations
 docker container run --rm \
     --volume $ConfigFile:/flyway/conf \
     --volume $SQLScripts:/flyway/sql \
@@ -145,57 +161,8 @@ sqlcmd -S localhost,1400 -U SA -d eBikes \
 # --------------------------------------
 # Azure Data Studio step
 # --------------------------------------
-# 6- Check eBikes database objects
+# 6- Check eBikes database objects / schema changes
 # Check database objects (Query)
-sqlcmd -S localhost,1400 -U SA -d eBikes \
-     -Q "SET NOCOUNT ON; \
-        SELECT  
-            CONVERT(VARCHAR(32),TABLE_SCHEMA) as TABLE_SCHEMA,
-            CONVERT(VARCHAR(32),TABLE_NAME) as TABLE_NAME
-        FROM INFORMATION_SCHEMA.TABLES;"
-
-# 7- Flyway migrations using Docker containers (V2 - eBikes)
-# Data load scripts
-code ./v2-SQLScripts/V2.1__Load-ProductsRelated-data.sql;
-code ./v2-SQLScripts/V2.2__Load-SalesRelated-data.sql;
-code ./v2-SQLScripts/V2.3__Load-OrdersRelated-data.sql;
-
-# Copy (move) scripts to sql migrations folder
-mv ./v2-SQLScripts/V2.1__Load-ProductsRelated-data.sql ./SQLScripts/V2.1__Load-ProductsRelated-data.sql;
-mv ./v2-SQLScripts/V2.2__Load-SalesRelated-data.sql ./SQLScripts/V2.2__Load-SalesRelated-data.sql;
-mv ./v2-SQLScripts/V2.3__Load-OrdersRelated-data.sql ./SQLScripts/V2.3__Load-OrdersRelated-data.sql;
-
-# Updated folder structure
-Demo_01
-├── ConfigFile
-│   └── flyway.conf
-└── SQLScripts
-    ├── V1.1__Create-CustomerRelated-Tables.sql
-    ├── V1.2__Create-ProductRelated-Tables.sql
-    ├── V1.3__Create-RegionsRelated-Tables.sql
-    ├── V2.1__Load-CustomerRelated-data.sql --> Now visible to Flyway
-    ├── V2.2__Load-ProductsRelated-data.sql --> Now visible to Flyway
-    └── V2.3__Load-RegionsRelated-data.sql  --> Now visible to Flyway
-
-# Check status (Flyway)
-docker container run --rm \
-    --volume $ConfigFile:/flyway/conf \
-    --volume $SQLScripts:/flyway/sql \
-    --network host \
-    flyway/flyway info
-
-# Perform V2 migration, checking status
-docker container run --rm \
-    --volume $ConfigFile:/flyway/conf \
-    --volume $SQLScripts:/flyway/sql \
-    --network host \
-    flyway/flyway migrate info
-
-# --------------------------------------
-# Azure Data Studio step
-# --------------------------------------
-# 8- Check eBikes database schema changes
-# Check status (Query)
 sqlcmd -S localhost,1400 -U SA -d eBikes \
      -Q "SET NOCOUNT ON; \
         SELECT  

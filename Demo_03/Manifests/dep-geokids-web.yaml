@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geokids-web-deployment
+spec:
+  selector:
+    matchLabels:
+      app: geokids-web
+      tier: web
+      track: stable
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 2
+  template:
+    metadata:
+      labels:
+        app: geokids-web
+        tier: web
+        track: stable
+        version: "#{webAppVersion}#"
+    spec:
+      containers:
+        - name: geokids-web
+          image: geokids/geokids-web-net-test:#{Build.BuildId}#
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: geokids-webapp-config
+                  key: webapp.db_user
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: geokids-web-password
+                  key: webapp.db_pass
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: geokids-webapp-config
+                  key: webapp.db_host
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: geokids-webapp-config
+                  key: webapp.db_port
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: geokids-webapp-config
+                  key: webapp.db_name
+          resources:
+            limits:
+              memory: "1Gi"
+          ports:
+            - name: http
+              containerPort: 80

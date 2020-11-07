@@ -1,0 +1,11 @@
+.DS_Store
+.gitignore
+.dockerignore
+Dockerfile
+2_1_FlywayPipeline-v1.sh
+3_1_FlywayPipeline-v2.sh
+README.md
+.vscode/
+ConfigFile/
+Manifests/
+WebApp/

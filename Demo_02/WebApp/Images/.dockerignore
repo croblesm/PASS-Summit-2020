@@ -1,0 +1,44 @@
+# Exclude macOS and VS code local files
+.DS_Store
+.LSOverride
+.vscode/
+*.swp
+*.*~
+project.lock.json
+.vs/
+.gitignore
+.dockerignore
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Exclude local files
+README.md
+release-info.md
+Dockerfile
+2_1_FlywayPipeline-v1.sh
+3_1_FlywayPipeline-v2.sh
+ConfigFile/
+Manifests/
+Database/
+Pipeline-CI config-v1.png
+Pipeline-CI config-v2.png
+Pipeline-PR config-v2.png

@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Countries";
+}
+
+<div class="col-md-12">
+    &nbsp;
+    <h1 class="aligncenter">Countries</h1>
+
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>Continent</th>
+            <th>Region</th>
+            <th>ID</th>
+            <th>Country</th>
+        </tr>
+        @{
+            foreach(var item in ViewBag.countries){
+                <tr>
+                    <td>@item.continent</td>
+                    <td>@item.region</td>
+                    <td>@item.country_id</td>
+                    <td>@item.country</td>
+                </tr>
+            }
+        }
+    </table>
+</div>
