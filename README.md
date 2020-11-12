@@ -23,9 +23,9 @@ You will be able to build your first database migration through a CI/CD pipeline
 ## **Other**  
 * [GeoKids - GitHub organization](https://github.com/geo-kids)  
 This organization includes the following repositories:
-    * Flyway-migrations → SQL Server database migrations files and custom Flyway image
-    * geokids-web-net → Web application .NET Core source code
-    * geokids-app → Integrated solution (WebApp + DB)
+    * *Flyway-migrations* → SQL Server database migrations files and custom Flyway image
+    * *Geokids-Web-Net* → Web application .NET Core source code
+    * *Geokids-App* → Integrated solution (WebApp + DB)
 
 * [GeoKids - Azure DevOps](https://dev.azure.com/GeoKids/)  
 This DevOps organization includes the main pipeline used in Demos 03 and 04.
