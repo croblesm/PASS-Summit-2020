@@ -29,9 +29,9 @@ This organization includes the following repositories:
     
 | Name      | Description |
 | ----------- | ----------- |
-| Flyway-migrations      | This repository includes an example of how to build a custom [Flyway]() container image|
-| GeoKids-Web-Net   | This repository contains the .NET Core source code of the Web application|
-| GeoKids-App   |This repository contains the integrated pipeline used by Azure DevOps to build, test and deploy the complete solution|
+| Flyway-migrations| This repository includes an example of how to build a custom [Flyway]() container image|
+| GeoKids-Web| This repository contains the .NET Core source code of the Web application|
+| GeoKids-App| This repository contains the integrated pipeline used by Azure DevOps to build, test and deploy the complete solution|
 
 
 * [GeoKids - Azure DevOps](https://dev.azure.com/GeoKids/)  
