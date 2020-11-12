@@ -26,6 +26,13 @@ This organization includes the following repositories:
     * Flyway-migrations -> SQL Server database migrations files and custom Flyway image
     * geokids-web-net -> Web application .NET Core source code
     * geokids-app -> Integrated solution (WebApp + DB)
+    
+| Name      | Description |
+| ----------- | ----------- |
+| Flyway-migrations      | This repository includes an example of how to build a custom [Flyway]() container image|
+| GeoKids-Web-Net   | This repository contains the .NET Core source code of the Web application|
+| GeoKids-App   |This repository contains the integrated pipeline used by Azure DevOps to build, test and deploy the complete solution|
+
 
 * [GeoKids - Azure DevOps](https://dev.azure.com/GeoKids/)  
 This DevOps organization includes the main pipeline used in Demos 03 and 04.
