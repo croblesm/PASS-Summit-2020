@@ -1,5 +1,5 @@
 # Azure DevOps Test
-# GeoKids app - Version 1
+# GeoKids app - Version 2
 
 trigger:
   - master
@@ -11,10 +11,10 @@ resources:
 variables:
   tag: '$(Build.BuildId)'
   dockerOrg: geokids
-  webDockerRepo: geokids-web-net-test
+  webDockerRepo: geokids-web-net
   flywayDockerRepo: geokids-sql-flyway
-  webAppVersion: "1.0"
-  databaseVersion: "1.0"
+  webAppVersion: "2.0"
+  databaseVersion: "2.0"
 
 ## Build stage ##
 ###########################################################################
@@ -143,7 +143,7 @@ stages:
         artifactName: 'Artifacts'
         publishLocation: 'Container'
 
-## Relese stage ##
+## Release stage ##
 ###########################################################################
 - stage: Release
   displayName: Release

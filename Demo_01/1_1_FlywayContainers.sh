@@ -18,15 +18,15 @@
 # SQL Server:   jdbc:SQL Server://<host>:<port>;databaseName=<database>
 
 # 0- Env variables | demo path
-cd ~/Documents/Summit-2020/Demo_01;
+# Variables
 SQLCMDPASSWORD='CmdL1n3_r0ck5';
+
+# Demo path
+# Make sure to replace this path, with your local computer path
+cd ~/Documents/Summit-2020/Demo_01;
 ConfigFile=~/Documents/Summit-2020/Demo_01/ConfigFile;
 SQLScripts=~/Documents/Summit-2020/Demo_01/SQLScripts;
 
-# Environment Cleanup 
-# docker rm -f eBikes;
-# docker volume rm vlm_SQLData;
-# sqlcmd -S localhost,1400 -U SA -h -1 -Q "DROP DATABASE eBikes; DROP LOGIN flyway;"
 
 # 1- Create SQL Server container
 # ProTip: Limit your containers resource utilization 👀 🧐

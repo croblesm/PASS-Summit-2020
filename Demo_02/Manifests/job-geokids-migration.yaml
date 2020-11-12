@@ -4,9 +4,6 @@ metadata:
   name: dbmigration-#{Build.BuildId}#
 spec:
   template:
-    metadata:
-      labels:
-        version: "#{databaseVersion}#"
     spec:
       containers:
       - name: db-migration-#{Build.BuildId}#
@@ -30,4 +27,3 @@ spec:
           configMap:
             name: geokids-flyway-config
   backoffLimit: 2
-  

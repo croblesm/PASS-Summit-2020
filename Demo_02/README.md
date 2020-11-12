@@ -1,4 +1,4 @@
-# Flyway migrations on Azure pipelines (CI/CD)
+# Application + Database migrations on Azure pipelines - v1.0
 
 ## Demo 02
 ## Version 1.0
@@ -18,25 +18,6 @@
 * Check GeoKids website
 * Create Kubernetes and GitHub release tag
 * Check pipeline CI options
-
-## Demo 03
-## Version 2.0
-* Review repository structure
-* Check webapp rollout history - Kubernetes deployment
-* Create version 2.0 branch (local repository)
-* Exchange webapp versions
-* Add new migrations to SQL scripts folder
-* Review Flyway new migrations structure'
-* Review Flyway migrations - SQL files
-* Change pipeline CI options
-* Push changes to repository (v2.0)
-* Create pull request (master <- v2.0)
-* Monitor Azure pipeline
-* Check Flyway migration job status
-* Review Flyway schema history
-* Review changes in SQL Server GeoKids database
-* Check GeoKids website - New frontend (v2.0)
-* Repository cleanup and release tag
 
 ## Questions?
 If you have questions or comments about this demo, don't hesitate to contact me at <crobles@dbamastery.com>

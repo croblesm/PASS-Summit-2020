@@ -13,8 +13,6 @@ variables:
   dockerOrg: geokids
   webDockerRepo: geokids-web-net
   flywayDockerRepo: geokids-sql-flyway
-  webAppVersion: "1.0"
-  databaseVersion: "1.0"
 
 ## Build stage ##
 ###########################################################################
