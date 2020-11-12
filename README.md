@@ -20,7 +20,7 @@ You will be able to build your first database migration through a CI/CD pipeline
 * [Integrated pipeline - Flyway migration + App version 1.0](Demo_02)
 * [Integrated pipeline - Flyway migration + App version 2.0](Demo_03)
 
-## **Other**  
+## **More resources**
 * [GeoKids - GitHub organization](https://github.com/geo-kids)  
 This organization includes the following repositories:
     * *Flyway-migrations* → SQL Server database migrations files and custom Flyway image
