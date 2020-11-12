@@ -1,7 +1,7 @@
-# Application + Database migrations on Azure pipelines - v1.0
+# Demo 02
+## Application + Database migrations on Azure pipelines
+> v1.0
 
-## Demo 02
-## Version 1.0
 * Repository structure
 * Kubernetes architecture
 * Connect and show SQL Server GeoKids empty shell database
