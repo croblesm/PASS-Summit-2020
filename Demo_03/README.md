@@ -1,7 +1,7 @@
-# Application + Database migrations on Azure pipelines - v2.0
+# Demo 03
+## Application + Database migrations on Azure pipelines
+> v2.0
 
-## Demo 03
-## Version 2.0
 * Review repository structure
 * Check webapp rollout history - Kubernetes deployment
 * Create version 2.0 branch (local repository)
