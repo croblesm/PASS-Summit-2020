@@ -1,4 +1,5 @@
-# Demo 01 - Getting started with Flyway migrations using Docker
+# Demo 01
+## Getting started with Flyway migrations using Docker
 
 * Create SQL Server container with eBikes 
 * Initialize eBikes database
