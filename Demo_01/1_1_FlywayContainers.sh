@@ -18,15 +18,9 @@
 # SQL Server:   jdbc:SQL Server://<host>:<port>;databaseName=<database>
 
 # 0- Env variables | demo path
-cd ~/Documents/Summit-2020/Demo_01;
 SQLCMDPASSWORD='CmdL1n3_r0ck5';
-ConfigFile=~/Documents/Summit-2020/Demo_01/ConfigFile;
-SQLScripts=~/Documents/Summit-2020/Demo_01/SQLScripts;
-
-# Environment Cleanup 
-# docker rm -f eBikes;
-# docker volume rm vlm_SQLData;
-# sqlcmd -S localhost,1400 -U SA -h -1 -Q "DROP DATABASE eBikes; DROP LOGIN flyway;"
+ConfigFile=./Demo01/ConfigFile;
+SQLScripts=./Demo01/SQLScripts;
 
 # 1- Create SQL Server container
 # ProTip: Limit your containers resource utilization 👀 🧐
@@ -123,8 +117,8 @@ Volume              Usage
 /flyway/jars 	    The jars files that you want Flyway to use (for Java-based migrations
 
 # ConfigFile & SQLScripts environment variables for actual path
-ConfigFile=~/Documents/Summit-2020/Demo_01/ConfigFile;
-SQLScripts=~/Documents/Summit-2020/Demo_01/SQLScripts;
+ConfigFile=./Demo01/ConfigFile;
+SQLScripts=./Demo01/SQLScripts;
 
 # Initializing flyway
 # --network host: host network mode to use localhost bridge network in config file
