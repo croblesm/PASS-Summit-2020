@@ -28,26 +28,11 @@
 
 # 0- Local variables | Demo path
 # Variables
-ConfigFile=~/Documents/Summit-2020/Demo_03/ConfigFile;
+ConfigFile=./Demo_03/ConfigFile;
 FlywayPassword='_D3v3L0pM3nt_';
 SQLCMDPASSWORD='_SqLr0ck5_';
 SQLCMDUSER='SA';
 GeoKidsWeb=`kubectl get services geokids-service-web --output jsonpath='{.status.loadBalancer.ingress[0].ip}'`
-# Demo path
-cd ~/Documents/Summit-2020/Demo_03;
-
-# Environment Cleanup
-#Flyway cleanup
-#flyway -configFiles=$ConfigFile/flyway.conf clean
-
-# Scripts cleanup
-# rm -rf ./Database/SQLScripts/V2.1__Add-FlagColumn-CountriesTable.sql;
-# rm -rf ./Database/SQLScripts/V2.2__Load-CountryFlags-Data.sql;
-# rm -rf ./Database/SQLScripts/V2.3__Create-ViewStructures.sql;
-
-# WebApp cleanup
-# mv ./WebApp ./v2-WebApp;
-# mv ./v1-WebApp ./WebApp;
 
 # 1- Review repository structure
 Demo_03
