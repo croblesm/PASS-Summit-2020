@@ -28,17 +28,11 @@
 
 # 0- Local variables | Demo path
 # Variables
-ConfigFile=~/Documents/Summit-2020/Demo_02/ConfigFile;
+ConfigFile=./Demo_02/ConfigFile;
 FlywayPassword='_D3v3L0pM3nt_';
 SQLCMDPASSWORD='_SqLr0ck5_';
 SQLCMDUSER='SA';
 GeoKidsWeb=`kubectl get services geokids-service-web --output jsonpath='{.status.loadBalancer.ingress[0].ip}'`
-# Demo path
-cd ~/Documents/Summit-2020/Demo_02;
-
-# Environment Cleanup
-# Flyway cleanup
-# flyway -configFiles=$ConfigFile/flyway.conf clean
 
 # 1- Repository structure (Integrated solution)
 #   GeoKids
